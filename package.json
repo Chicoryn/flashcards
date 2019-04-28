@@ -1,0 +1,11 @@
+{
+  "name": "flashcards-app",
+  "version": "0.0.0",
+  "scripts": {
+    "heroku-postbuild": "cd web && npm run build",
+    "postinstall": "cd web && npm install"
+  },
+  "engines": {
+    "node": "10.x"
+  }
+}
