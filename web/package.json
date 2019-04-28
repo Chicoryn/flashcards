@@ -35,8 +35,5 @@
   "keywords": [],
   "author": "Karl Sundequist Blomdahl <karl.sundequist.blomdahl+flashcards@gmail.com>",
   "license": "Apache-2.0",
-  "description": "",
-  "engines": {
-    "node": "10.x"
-  }
+  "description": ""
 }
