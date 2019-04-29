@@ -16,6 +16,7 @@
     "react-redux": "^5.1",
     "redux": "^3.7",
     "redux-thunk": "^2.3",
+    "request": "^2.88",
     "request-promise": "^4.2"
   },
   "devDependencies": {
