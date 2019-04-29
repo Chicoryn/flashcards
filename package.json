@@ -2,9 +2,9 @@
   "name": "flashcards-app",
   "version": "0.0.0",
   "scripts": {
-    "heroku-prebuild": "cd web && npm install --dev",
-    "heroku-postbuild": "cd web && npm run build",
-    "postinstall": "cd web && npm install"
+    "heroku-prebuild": "cd src/web && npm install --dev",
+    "heroku-postbuild": "cd src/web && npm run build",
+    "postinstall": "cd src/web && npm install"
   },
   "engines": {
     "node": "10.x"

@@ -1,2 +1,2 @@
-#api:
-web: cd web && npm run start
+api: src/api/api
+web: cd src/web && npm run start
