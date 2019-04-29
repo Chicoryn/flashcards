@@ -1,2 +1,1 @@
-api: bin/api
-web: cd src/web && npm run start
+web: bin/api & (cd src/web && npm run start) & wait
