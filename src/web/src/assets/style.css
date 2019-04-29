@@ -2,6 +2,85 @@ body {
     background-color: #212121;
 }
 
+.edit-icon, .delete-icon, .new-icon {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 14px;
+    top: 50%;
+}
+
+.controls {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.edit-icon {
+  display: inline-block;
+  transform: translate(-50%, -50%) rotateZ(90deg);
+}
+
+.controls button, .controls li {
+    cursor: pointer;
+}
+
+.controls button, .controls li.disabled {
+    cursor: none;
+    color: 0;
+}
+
+.controls .dropdown {
+    opacity: 0;
+    transition: opacity 0.2s linear;
+
+    width: 150px;
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0 8px;
+
+    background-color: #616161;
+    border-radius: 8px;
+    border: 1px solid #424242;
+}
+
+.controls .dropdown li {
+    position: relative;
+    padding: 4px 8px;
+
+    font-family: Calibri, sans-serif;
+    padding-left: 30px;
+    color: #e0e0e0;
+}
+
+.controls .dropdown li:not(.disabled):hover {
+    background-color: #757575;
+}
+
+.controls .dropdown li:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.controls .dropdown li:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.controls .dropdown li.separator {
+    border-top: 1px solid #424242;
+    padding: 0;
+}
+
+.controls:focus-within .dropdown {
+    opacity: 1;
+}
+
+.controls button {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
 .shortcuts {
     width: 400px;
     margin: auto;

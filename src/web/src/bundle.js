@@ -1,6 +1,7 @@
 import React from 'react'
 import { hydrate } from 'react-dom'
-import { createStore } from 'redux'
+import thunkMiddleware from 'redux-thunk'
+import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import App from './components/app'
 import {flashApp} from './reducers'
@@ -9,11 +10,14 @@ import './assets/style.css'
 
 const store = createStore(
     flashApp,
-    window.__STATE__ || {}
+    window.__STATE__ || {},
+    applyMiddleware(thunkMiddleware)
 );
 
 hydrate(
-    <Provider store={store}><App /></Provider>,
+    <Provider store={store}>
+        <App />
+    </Provider>,
     document.getElementById("root")
 );
 

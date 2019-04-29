@@ -4,8 +4,9 @@ import express from 'express'
 import React from 'react';
 import {renderToString} from 'react-dom/server'
 import App from './components/app'
-import {flashApp, initialState} from './reducers'
-import {createStore} from "redux";
+import {flashApp, initialState, shuffle} from './reducers'
+import thunkMiddleware from 'redux-thunk'
+import {createStore, applyMiddleware} from "redux";
 import {Provider} from "react-redux";
 import request from 'request-promise'
 
@@ -15,7 +16,7 @@ const PORT = process.env.PORT || 3000;
 export const getState = async function() {
     const cardsJson = await request(`http://localhost:${API_SERVER_PORT}`)
         .catch(err => { console.log(err) });
-    const cards = JSON.parse(cardsJson) || [];
+    const cards = shuffle(JSON.parse(cardsJson) || []);
 
     return Object.assign({}, initialState, { cards });
 };
@@ -33,7 +34,11 @@ fs.readFile(path.resolve(__dirname, '../dist/index.html'), (err, template) => {
     }
 
     router.get('/', async (request, response) => {
-        const store = createStore(flashApp, await getState());
+        const store = createStore(
+            flashApp,
+            await getState(),
+            applyMiddleware(thunkMiddleware)
+        );
         let content = renderToString(
             <Provider store={store}>
                 <App/>
@@ -48,7 +53,8 @@ fs.readFile(path.resolve(__dirname, '../dist/index.html'), (err, template) => {
             template.toString().replace(
                 /<div id="?root"?><\/div>/,
                 `<div id="root">${content}</div>` +
-                `<script>window.__STATE__ = ${preloadedState}</script>`
+                `<script>window.__STATE__ = ${preloadedState};</script>` +
+                `<script>window.__API_SERVER_PORT__ = ${API_SERVER_PORT};</script>`
             )
         );
     });

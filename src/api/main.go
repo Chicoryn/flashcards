@@ -22,6 +22,10 @@ type CardsHandler struct {
 }
 
 func (h *CardsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+    w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE")
+    w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length")
+
 	if r.Method == "GET" {
 		rows, err := h.db.Query("SELECT id, answer, question FROM cards ORDER BY id")
 		cards := make([]*Card, 0)

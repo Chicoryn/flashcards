@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from "react-redux";
 
 import CardContainer from './card_container'
+import ControlsContainer from './controls_container'
 
 class App_ extends React.Component {
     constructor(props) {
@@ -24,9 +25,10 @@ class App_ extends React.Component {
     }
 
     render() {
-        return (
+        return <>
+            <ControlsContainer />
             <CardContainer />
-        );
+        </>;
     }
 }
 
