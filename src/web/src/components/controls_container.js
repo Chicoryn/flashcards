@@ -24,7 +24,7 @@ const mapDispatchToProps = dispatch => {
         onNewClick: () => {
             dispatch(dispatch => {
                 let question = prompt('What is the question?');
-                let answer = prompt('What is the answer?');
+                let answer = question && prompt('What is the answer?');
 
                 if (question && answer) {
                     fetch(getApiServer(), {
@@ -49,7 +49,7 @@ const mapDispatchToProps = dispatch => {
         onEditClick: (id, currentQuestion, currentAnswer) => {
             dispatch(dispatch => {
                 let question = prompt('What is the question?', currentQuestion);
-                let answer = prompt('What is the answer?', currentAnswer);
+                let answer = question && prompt('What is the answer?', currentAnswer);
 
                 if (question && answer) {
                     fetch(getApiServer(), {
