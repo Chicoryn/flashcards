@@ -1,11 +1,7 @@
-const initialState = {
+export const initialState = {
     side: 'question',
     currentIndex: 0,
-    cards: [
-        {question: 'Akterrunda', answer: 'Bågformen på ett segels akterlik'},
-        {question: 'Akterstag', answer: 'Stagar masttoppen akteröver'},
-        {question: 'Akterstagad', answer: 'En mast som har en viss lutning akteröver'},
-    ]
+    cards: []
 };
 
 function shuffle(cards) {

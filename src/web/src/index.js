@@ -7,6 +7,19 @@ import App from './components/app'
 import {flashApp, initialState} from './reducers'
 import {createStore} from "redux";
 import {Provider} from "react-redux";
+import request from 'request-promise'
+
+const API_SERVER_PORT = process.env.API_SERVER_PORT || 8080;
+const PORT = process.env.PORT || 3000;
+
+export const getState = async function() {
+    const cardsJson = await request(`http://localhost:${API_SERVER_PORT}`)
+        .catch(err => { console.log(err) });
+    const cards = JSON.parse(cardsJson) || [];
+
+    return Object.assign({}, initialState, { cards });
+};
+
 
 const app = express();
 let router = express.Router();
@@ -19,8 +32,8 @@ fs.readFile(path.resolve(__dirname, '../dist/index.html'), (err, template) => {
         return;
     }
 
-    router.get('/', (request, response) => {
-        const store = createStore(flashApp, initialState);
+    router.get('/', async (request, response) => {
+        const store = createStore(flashApp, await getState());
         let content = renderToString(
             <Provider store={store}>
                 <App/>
@@ -41,5 +54,5 @@ fs.readFile(path.resolve(__dirname, '../dist/index.html'), (err, template) => {
     });
 
     app.use(router);
-    app.listen(process.env.PORT || 3000);
+    app.listen(PORT);
 });

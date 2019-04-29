@@ -3,10 +3,12 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	_ "github.com/lib/pq"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 )
 
 type Card struct {
@@ -99,7 +101,11 @@ func main() {
 	}
 
 	// Start-up the HTTP server
-	http.Handle("/", &CardsHandler{db})
+	port, err := strconv.Atoi(os.Getenv("API_SERVER_PORT"))
+	if err != nil {
+		port = 8080
+	}
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	http.Handle("/", &CardsHandler{db})
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), nil))
 }
