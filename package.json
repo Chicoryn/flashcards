@@ -6,12 +6,10 @@
     "build": "webpack -p",
     "build:watch": "webpack --watch --mode development",
     "build:dev": "webpack -p",
-    "start": "babel-node --optimize_for_size --max_old_space_size=920 --gc_interval=100 src/index.js",
-    "start:dev": "nodemon src/index.js --exec babel-node"
+    "start": "node --optimize_for_size --max_old_space_size=920 --gc_interval=100 dist/index.js",
+    "start:dev": "nodemon dist/index.js"
   },
   "dependencies": {
-    "@babel/core": "^7.4",
-    "@babel/node": "^7.2",
     "express": "^4.16",
     "react": "^16.8",
     "react-dom": "^16.8",
@@ -20,7 +18,9 @@
     "redux-thunk": "^2.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.4",
     "@babel/cli": "^7.4",
+    "@babel/node": "^7.2",
     "@babel/preset-env": "^7.4",
     "@babel/preset-react": "^7.0",
     "babel-loader": "^8.0",
