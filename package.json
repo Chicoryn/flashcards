@@ -10,6 +10,7 @@
     "start:dev": "nodemon src/index.js --exec babel-node"
   },
   "dependencies": {
+    "@babel/core": "^7.4",
     "@babel/node": "^7.2",
     "express": "^4.16",
     "react": "^16.8",
@@ -20,7 +21,6 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.4",
-    "@babel/core": "^7.4",
     "@babel/preset-env": "^7.4",
     "@babel/preset-react": "^7.0",
     "babel-loader": "^8.0",
