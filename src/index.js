@@ -5,27 +5,20 @@ import React from 'react';
 import {renderToString} from 'react-dom/server'
 import App from './components/app'
 import {flashApp, initialState, shuffle} from './reducers'
+import Card from './models/card'
+import CardsController from './controllers/cards'
 import thunkMiddleware from 'redux-thunk'
 import {createStore, applyMiddleware} from "redux";
 import {Provider} from "react-redux";
-import request from 'request-promise'
-
-const API_SERVER_PORT = process.env.API_SERVER_PORT || 8080;
-const PORT = process.env.PORT || 3000;
-
-export const getState = async function() {
-    const cardsJson = await request(`http://localhost:${API_SERVER_PORT}`)
-        .catch(err => { console.log(err) });
-    const cards = shuffle(JSON.parse(cardsJson) || []);
-
-    return Object.assign({}, initialState, { cards });
-};
-
 
 const app = express();
 let router = express.Router();
 
 router.use('/assets', express.static(path.resolve(__dirname, '../dist/')));
+router.get('/cards', async (request, response) => CardsController.index(request, response));
+router.patch('/cards', async (request, response) => CardsController.update(request, response));
+router.post('/cards', async (request, response) => CardsController.create(request, response));
+router.delete('/cards', async (request, response) => CardsController.destroy(request, response));
 
 fs.readFile(path.resolve(__dirname, '../dist/index.html'), (err, template) => {
     if (err) {
@@ -36,7 +29,7 @@ fs.readFile(path.resolve(__dirname, '../dist/index.html'), (err, template) => {
     router.get('/', async (request, response) => {
         const store = createStore(
             flashApp,
-            await getState(),
+            Object.assign({}, initialState, { cards: await Card.getAll() }),
             applyMiddleware(thunkMiddleware)
         );
         let content = renderToString(
@@ -53,12 +46,12 @@ fs.readFile(path.resolve(__dirname, '../dist/index.html'), (err, template) => {
             template.toString().replace(
                 /<div id="?root"?><\/div>/,
                 `<div id="root">${content}</div>` +
-                `<script>window.__STATE__ = ${preloadedState};</script>` +
-                `<script>window.__API_SERVER_PORT__ = ${API_SERVER_PORT};</script>`
+                `<script>window.__STATE__ = ${preloadedState};</script>`
             )
         );
     });
 
+    app.use(express.json());
     app.use(router);
-    app.listen(PORT);
+    app.listen(process.env.PORT || 3000);
 });

@@ -12,11 +12,17 @@ const mapStateToProps = state => {
     }, card);
 };
 
-function getApiServer() {
-    const protocol = window.location.protocol;
-    const hostname = window.location.hostname;
-
-    return `${protocol}\/\/${hostname}:${window.__API_SERVER_PORT__}`;
+function fetchJson(url, method, body) {
+    return fetch(
+        url,
+        {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: body && JSON.stringify(body)
+        }
+    );
 }
 
 const mapDispatchToProps = dispatch => {
@@ -27,17 +33,11 @@ const mapDispatchToProps = dispatch => {
                 let answer = question && prompt('What is the answer?');
 
                 if (question && answer) {
-                    fetch(getApiServer(), {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            question: question,
-                            answer: answer
-                        })
+                    fetchJson('/cards', 'POST', {
+                        question: question,
+                        answer: answer
                     }).then(() => {
-                        fetch(getApiServer()).then(response => {
+                        fetchJson('/cards', 'GET', null).then(response => {
                             response.json().then(cards => {
                                 dispatch({ type: 'REFRESH_CARDS', cards });
                             });
@@ -52,16 +52,10 @@ const mapDispatchToProps = dispatch => {
                 let answer = question && prompt('What is the answer?', currentAnswer);
 
                 if (question && answer) {
-                    fetch(getApiServer(), {
-                        method: 'PATCH',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            id: id,
-                            question: question,
-                            answer: answer
-                        })
+                    fetchJson('/cards', 'PATCH', {
+                        id: id,
+                        question: question,
+                        answer: answer
                     }).then(() => {
                         dispatch({ type: 'EDIT_CARD', id, question, answer });
                     });
@@ -73,13 +67,7 @@ const mapDispatchToProps = dispatch => {
                 if (!confirm('Are you sure that you want to remove this card?'))
                     return;
 
-                fetch(getApiServer(), {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ id: id })
-                }).then(() => {
+                fetchJson('/cards', 'DELETE', { id: id }).then(() => {
                     dispatch({ type: 'REMOVE_CARD', id });
                 });
             });
