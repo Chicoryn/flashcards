@@ -5,7 +5,7 @@
   "scripts": {
     "build": "webpack -p",
     "build:watch": "webpack --watch --mode development",
-    "build:dev": "webpack -p",
+    "build:dev": "webpack --mode development",
     "start": "node --optimize_for_size --max_old_space_size=920 --gc_interval=100 dist/index.js",
     "start:dev": "nodemon dist/index.js"
   },
