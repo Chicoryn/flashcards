@@ -29,7 +29,7 @@ fs.readFile(path.resolve(__dirname, '../dist/index.html'), (err, template) => {
     router.get('/', async (request, response) => {
         const store = createStore(
             flashApp,
-            Object.assign({}, initialState, { cards: await Card.getAll() }),
+            Object.assign({}, initialState, { cards: shuffle(await Card.getAll()) }),
             applyMiddleware(thunkMiddleware)
         );
         let content = renderToString(
